@@ -81,8 +81,19 @@ cmax1
 -- das Maximum angenommen wird.
 -- Versuchen Sie, eine endrekursive Lösung zu finden
 -- (mit einer lokalen Hilfsfunktion).
-
 imax2   :: (Integer -> Integer) -> Integer -> Integer -> (Integer, Integer)
-imax2 f lb ub = undefined
+imax2 f lb ub
+  | lb > ub = error "Illegal arguments"
+  | lb < 0 = error "Illegal arguments"
+  | lb == ub = (lb, f lb)
+  | otherwise = imax2' f lb ub (0, 0)
+  where
+    imax2'  :: (Integer -> Integer) -> Integer -> Integer -> (Integer, Integer) -> (Integer, Integer)
+    imax2' f lb ub (pIndex, pMax)
+      | lb > ub = (pIndex, pMax)
+      | newValue > pMax = imax2' f (lb+1) ub (lb, newValue)
+      | otherwise = imax2' f (lb+1) ub (pIndex, pMax)
+        where
+          newValue = f(lb)
 
--- ----------------------------------------
+-------------------------------------------
