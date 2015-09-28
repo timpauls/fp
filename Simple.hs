@@ -52,7 +52,11 @@ c1 = c
 -- vordefinierten Funkt min und max.
 
 cmax    :: Integer -> Integer -> Integer
-cmax lb ub = undefined
+cmax lb ub
+  | lb > ub = error "Illegal arguments"
+  | lb < 0 = error "Illegal arguments"
+  | lb == ub = c lb
+  | otherwise = max (c lb) (cmax (lb+1) ub)
 
 
 -- Definieren Sie eine Funktion imax, die für ein
