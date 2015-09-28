@@ -43,7 +43,15 @@ c n
 -- Definieren Sie ein endrekurive Variante von c
 
 c1      :: Integer -> Integer
-c1 = c
+c1 n
+  | n < 1 = error "Illegal argument"
+  | otherwise = c1' n 0
+  where
+    c1'   :: Integer -> Integer -> Integer
+    c1' n counter
+      | n == 1 = counter
+      | even n = c1' (n `div` 2) (counter+1)
+      | otherwise = c1' (3*n+1) (counter+1)
 
 
 -- Definieren Sie eine Funktion cmax, die für ein
