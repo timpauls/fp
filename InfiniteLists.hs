@@ -18,7 +18,7 @@ names = [[x]++(numToStr y) | y <- [1..], x <- ['a'..'z']]
 -- fibs = [0, 1, 1, 2, 3, 5, 8, ...]
 
 fibs :: [Integer]
-fibs = undefined
+fibs = 0 : 1 : zipWith (+) (tail fibs) fibs
 
 -- ----------------------------------------
 --
