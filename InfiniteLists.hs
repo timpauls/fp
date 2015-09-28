@@ -27,7 +27,10 @@ fibs = undefined
 -- sieve operation
 
 primes :: [Integer]
-primes = undefined
+primes = sieve [2..]
+  where
+    sieve   :: [Integer] -> [Integer]
+    sieve (x:xs) = x : sieve [y | y <- xs, y `mod` x /= 0]
 
 -- ----------------------------------------
 --
