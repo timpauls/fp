@@ -33,7 +33,15 @@ fib2 x
 -- 1 erhöht.
 
 c       :: Integer -> Integer
-c n = undefined
+c n
+  | n < 1 = error "Illegal argument"
+  | otherwise = collatz n 0
+  where
+    collatz   :: Integer -> Integer -> Integer
+    collatz n counter
+      | n == 1 = counter
+      | even n = collatz (n `div` 2) (counter+1)
+      | otherwise = collatz (3*n+1) (counter+1)
 
 
 -- Definieren Sie ein endrekurive Variante von c
