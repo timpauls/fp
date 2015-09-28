@@ -56,9 +56,9 @@ hamilton :: [Integer]
 hamilton
   = merges [is2, is3, is5]
     where
-      is2 = undefined
-      is3 = undefined
-      is5 = undefined
+      is2 = [x |  x <- [0..], x `mod` 2 == 0]
+      is3 = [x |  x <- [0..], x `mod` 3 == 0]
+      is5 = [x |  x <- [0..], x `mod` 5 == 0]
 
 merge :: [Integer] -> [Integer] -> [Integer]
 merge = undefined
