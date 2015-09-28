@@ -65,7 +65,11 @@ cmax lb ub
 -- Sie die obige Funktion cmax so um, dass sie mit imax arbeitet.
 
 imax    :: (Integer -> Integer) -> Integer -> Integer -> Integer
-imax f lb ub = undefined
+imax f lb ub
+  | lb > ub = error "Illegal arguments"
+  | lb < 0 = error "Illegal arguments"
+  | lb == ub = f lb
+  | otherwise = max (f lb) (imax f (lb+1) ub)
 
 
 cmax1   :: Integer -> Integer -> Integer
