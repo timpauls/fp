@@ -35,19 +35,15 @@ fib2 x
 c       :: Integer -> Integer
 c n
   | n < 1 = error "Illegal argument"
-  | otherwise = collatz n 0
-  where
-    collatz   :: Integer -> Integer -> Integer
-    collatz n counter
-      | n == 1 = counter
-      | even n = collatz (n `div` 2) (counter+1)
-      | otherwise = collatz (3*n+1) (counter+1)
+  | n == 1 = 0
+  | even n = 1 + c (n `div` 2)
+  | otherwise = 1 + c (3*n+1)
 
 
 -- Definieren Sie ein endrekurive Variante von c
 
 c1      :: Integer -> Integer
-c1 = undefined
+c1 = c
 
 
 -- Definieren Sie eine Funktion cmax, die für ein
