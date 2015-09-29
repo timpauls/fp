@@ -75,8 +75,6 @@ merge (x:xs) (y:ys)
 
 merges :: [[Integer]] -> [Integer]
 merges [] = []
-merges ([]:xss) = merges(xss)
-merges (xs:[]) = xs
 merges (xs:xss) = merge xs (merges xss)
 
 -- | @merges@ with a fold
