@@ -61,14 +61,22 @@ hamilton
       is5 = [x |  x <- [0..], x `mod` 5 == 0]
 
 merge :: [Integer] -> [Integer] -> [Integer]
-merge = undefined
+merge x [] = x
+merge [] y = y
+merge (x:xs) (y:ys)
+  | x == y = [x] ++ merge xs (ys)
+  | x < y = [x] ++ merge xs (y:ys)
+  | otherwise = [y] ++ merge ys (x:xs)
 
 -- | @merges@ takes a list of lists of ascending integers
 -- and merges these lists into a single sorted list without any duplicates
 -- direct impl
 
 merges :: [[Integer]] -> [Integer]
-merges = undefined
+merges [] = []
+merges ([]:xss) = merges(xss)
+merges (xs:[]) = xs
+merges (xs:xss) = merges ((merge xs (head xss)) : tail xss)
 
 -- | @merges@ with a fold
 
