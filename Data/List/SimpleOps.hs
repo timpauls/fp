@@ -20,21 +20,26 @@ import Prelude hiding (splitAt)
 
 nub :: Eq a => [a] -> [a]
 nub [] = []
-nub (x : xs) = undefined
+nub (x : xs) = [x] ++ nub (filter (/= x) xs)
 
 
 -- .2 nub with list comprehension
 
 nub' :: Eq a => [a] -> [a]
 nub' [] = []
-nub' (x : xs) = undefined
+nub' (x : xs) = [x] ++ nub([ y | y <- xs, y /= x])
 
 
 -- .3 nub with foldr
 -- after chapter about folds
 
 nub'' :: Eq a => [a] -> [a]
-nub'' = undefined
+nub'' = 
+	foldr insert []
+	where 
+		insert e l
+			| elem e l = l
+			| otherwise = [e] ++ l
 
 
 -- ----------------------------------------
