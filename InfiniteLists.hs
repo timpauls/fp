@@ -54,7 +54,7 @@ hamilton'
 
 hamilton :: [Integer]
 hamilton
-  = merges [is2, is3, is5]
+  = merges' [is2, is3, is5]
     where
       is2 = [x |  x <- [0..], x `mod` 2 == 0]
       is3 = [x |  x <- [0..], x `mod` 3 == 0]
@@ -81,6 +81,6 @@ merges (xs:xss) = merges ((merge xs (head xss)) : tail xss)
 -- | @merges@ with a fold
 
 merges' :: [[Integer]] -> [Integer]
-merges' = undefined    -- after chapter about folds
+merges' = foldr merge []    -- after chapter about folds
 
 -- ----------------------------------------
