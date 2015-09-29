@@ -80,7 +80,10 @@ splitAt' n (x : xs) = (x : t, d)
 
 -- 1. impl: direct or with map
 intercalate :: [a] -> [[a]] -> [a]
-intercalate = undefined
+intercalate l (x:xs) =
+	concat (x : map func xs)
+	where
+		func e = l ++ e
 
 -- 2. impl: with foldr
 -- after chapter about folds
