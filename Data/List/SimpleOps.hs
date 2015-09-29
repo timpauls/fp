@@ -119,7 +119,12 @@ partition' p (x:xs)
 -- after chapter about folds
 
 partition'' :: (a -> Bool) -> [a] -> ([a], [a])
-partition'' = undefined
+partition'' p l = 
+	foldr func ([],[]) l
+	where
+		func e (t,f)
+			| p e = (e : t, f)
+			| (not.p)e = (t, e:f)
 
 -- ----------------------------------------
 --
