@@ -66,8 +66,12 @@ splitAt i xs = (take i xs, drop i xs)
 
 -- the impl
 splitAt' :: Int -> [a] -> ([a],[a])
-splitAt' = undefined
-
+splitAt' n xs  
+  	| n <= 0 = ([], xs )
+splitAt' n [] = ([], [])
+splitAt' n (x : xs) = (x : t, d)
+	where
+		(t,d) = splitAt' (n-1) xs
 -- ----------------------------------------
 
 -- | 'intercalate' inserts the list @xs@ in between
