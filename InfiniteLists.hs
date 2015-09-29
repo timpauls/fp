@@ -56,9 +56,9 @@ hamilton :: [Integer]
 hamilton
   = merges' [is2, is3, is5]
     where
-      is2 = [x |  x <- [0..], x `mod` 2 == 0]
-      is3 = [x |  x <- [0..], x `mod` 3 == 0]
-      is5 = [x |  x <- [0..], x `mod` 5 == 0]
+      is2 = [x |  x <- [0..], x `mod` 2 == 0] -- shitty
+      is3 = [x*3 |  x <- [0..]] -- not shitty
+      is5 = map (*5) [0..] -- equal not shitty to is3
 
 merge :: [Integer] -> [Integer] -> [Integer]
 merge x [] = x
