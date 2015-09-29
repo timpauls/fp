@@ -107,7 +107,13 @@ partition p xs
 
 -- 1. impl: direct
 partition' :: (a -> Bool) -> [a] -> ([a], [a])
-partition' = undefined
+partition' p [] = ([], [])
+partition' p (x:xs)
+	| p x = (x : t, f)
+	| (not . p) x = (t, x : f) 
+	where
+		(t, f) = partition' p xs 
+
 
 -- 2. impl: with foldr
 -- after chapter about folds
