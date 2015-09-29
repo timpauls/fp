@@ -5,7 +5,7 @@ module InfiniteLists where
 -- names = ["a".."z", "a1".."z1", "a2".."z2", ...]
 
 names :: [String]
-names = [[x]++(numToStr y) | y <- [1..], x <- ['a'..'z']]
+names = [[x]++(numToStr y) | y <- [0..], x <- ['a'..'z']]
   where
     numToStr n
       | n == 0 = ""
@@ -54,17 +54,18 @@ hamilton'
 
 hamilton :: [Integer]
 hamilton
-  = merges' [is2, is3, is5]
+  = merges [is2, is3, is5]
     where
-      is2 = [x |  x <- [0..], x `mod` 2 == 0]
-      is3 = [x |  x <- [0..], x `mod` 3 == 0]
-      is5 = [x |  x <- [0..], x `mod` 5 == 0]
+      is2 = [x |  x <- [0..], x `mod` 2 == 0] -- shitty
+      is3 = [x*3 |  x <- [0..]] -- not shitty
+      is5 = map (*5) [0..] -- equal not shitty to is3
 
+-- no duplicates in lists please. kkthx
 merge :: [Integer] -> [Integer] -> [Integer]
 merge x [] = x
 merge [] y = y
 merge (x:xs) (y:ys)
-  | x == y = [x] ++ merge xs (ys)
+  | x == y = [x] ++ merge xs ys
   | x < y = [x] ++ merge xs (y:ys)
   | otherwise = [y] ++ merge ys (x:xs)
 
@@ -74,9 +75,7 @@ merge (x:xs) (y:ys)
 
 merges :: [[Integer]] -> [Integer]
 merges [] = []
-merges ([]:xss) = merges(xss)
-merges (xs:[]) = xs
-merges (xs:xss) = merges ((merge xs (head xss)) : tail xss)
+merges (xs:xss) = merge xs (merges xss)
 
 -- | @merges@ with a fold
 
