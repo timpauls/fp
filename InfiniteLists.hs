@@ -5,7 +5,7 @@ module InfiniteLists where
 -- names = ["a".."z", "a1".."z1", "a2".."z2", ...]
 
 names :: [String]
-names = [[x]++(numToStr y) | y <- [1..], x <- ['a'..'z']]
+names = [[x]++(numToStr y) | y <- [0..], x <- ['a'..'z']]
   where
     numToStr n
       | n == 0 = ""
