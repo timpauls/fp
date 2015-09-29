@@ -88,7 +88,10 @@ intercalate l (x:xs) =
 -- 2. impl: with foldr
 -- after chapter about folds
 intercalate' :: [a] -> [[a]] -> [a]
-intercalate' = undefined
+intercalate' l (x:xs) = 
+	x ++ (foldr func [] xs)
+	where
+		func e l' = l ++ e ++ l' 
 
 -- ----------------------------------------
 
