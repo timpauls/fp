@@ -154,10 +154,11 @@ inits' = undefined
 --
 
 join' :: a -> [[a]] -> [a]
-join' = undefined
+join' c = intercalate' [c]
 
 --  this one fails with @split 'x' "xx"
 split' :: Eq a => a -> [a] -> [[a]]
 split' = undefined
+
     
 -- ----------------------------------------
