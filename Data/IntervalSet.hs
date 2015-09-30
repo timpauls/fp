@@ -97,7 +97,9 @@ fromList (x:xs) = union (singleton x) (fromList xs)
 
 
 toList :: IntervalSet -> [Int]
-toList = undefined
-
+toList = 
+	foldr func []
+	where
+		func (lb, ub) l = [lb..ub] ++ l
 
 -- ----------------------------------------
