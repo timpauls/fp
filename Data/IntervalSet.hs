@@ -80,7 +80,9 @@ insert :: Int -> IntervalSet -> IntervalSet
 insert i = insertInterval (i, i)
 
 union :: IntervalSet -> IntervalSet -> IntervalSet
-union = undefined
+union [] y = y
+union x [] = x
+union (x:xs) y = union xs (insertInterval x y)
 
 
 member :: Int -> IntervalSet -> Bool
