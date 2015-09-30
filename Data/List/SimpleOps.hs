@@ -166,13 +166,13 @@ join' c = intercalate' [c]
 
 --  this one fails with @split 'x' "xx"
 split' :: Eq a => a -> [a] -> [[a]]
-split' c = foldr func []
+split' d = foldr func []
 	where
-		func d []
-			| d == c = [[]]
-			| otherwise = [[d]]
-		func d (x:xs)
-			| d == c = [] : (x:xs)
-			| otherwise = (d : x) : xs
+		func e []
+			| e == d = [[], []]
+			| otherwise = [[e]]
+		func e (x:xs)
+			| e == d = [] : (x:xs)
+			| otherwise = (e : x) : xs
 
 -- ----------------------------------------
