@@ -34,9 +34,9 @@ nub' (x : xs) = [x] ++ nub([ y | y <- xs, y /= x])
 -- after chapter about folds
 
 nub'' :: Eq a => [a] -> [a]
-nub'' = 
+nub'' =
 	foldr insert []
-	where 
+	where
 		insert e l
 			| elem e l = l
 			| otherwise = [e] ++ l
@@ -66,7 +66,7 @@ splitAt i xs = (take i xs, drop i xs)
 
 -- the impl
 splitAt' :: Int -> [a] -> ([a],[a])
-splitAt' n xs  
+splitAt' n xs
   	| n <= 0 = ([], xs )
 splitAt' n [] = ([], [])
 splitAt' n (x : xs) = (x : t, d)
@@ -80,6 +80,7 @@ splitAt' n (x : xs) = (x : t, d)
 
 -- 1. impl: direct or with map
 intercalate :: [a] -> [[a]] -> [a]
+intercalate _ [] = []
 intercalate l (x:xs) =
 	concat (x : map func xs)
 	where
@@ -88,10 +89,11 @@ intercalate l (x:xs) =
 -- 2. impl: with foldr
 -- after chapter about folds
 intercalate' :: [a] -> [[a]] -> [a]
-intercalate' l (x:xs) = 
+intercalate' _ [] = []
+intercalate' l (x:xs) =
 	x ++ (foldr func [] xs)
 	where
-		func e l' = l ++ e ++ l' 
+		func e l' = l ++ e ++ l'
 
 -- ----------------------------------------
 
@@ -110,16 +112,16 @@ partition' :: (a -> Bool) -> [a] -> ([a], [a])
 partition' p [] = ([], [])
 partition' p (x:xs)
 	| p x = (x : t, f)
-	| (not . p) x = (t, x : f) 
+	| (not . p) x = (t, x : f)
 	where
-		(t, f) = partition' p xs 
+		(t, f) = partition' p xs
 
 
 -- 2. impl: with foldr
 -- after chapter about folds
 
 partition'' :: (a -> Bool) -> [a] -> ([a], [a])
-partition'' p l = 
+partition'' p l =
 	foldr func ([],[]) l
 	where
 		func e (t,f)
@@ -129,7 +131,7 @@ partition'' p l =
 -- ----------------------------------------
 --
 -- | all prefixes of a list
-      
+
 -- 1. impl: direct
 
 inits        :: [a] -> [[a]]
@@ -158,7 +160,13 @@ join' c = intercalate' [c]
 
 --  this one fails with @split 'x' "xx"
 split' :: Eq a => a -> [a] -> [[a]]
-split' = undefined
+split' c = foldr func []
+	where
+		func d []
+			| d == c = [[]]
+			| otherwise = [[d]]
+		func d (x:xs)
+			| d == c = [] : (x:xs)
+			| otherwise = (d : x) : xs
 
-    
 -- ----------------------------------------
