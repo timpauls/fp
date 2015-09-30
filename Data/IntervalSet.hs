@@ -84,11 +84,14 @@ union = undefined
 
 
 member :: Int -> IntervalSet -> Bool
-member = undefined
-
+member i = 
+	foldr func False
+	where
+		func (lb, ub) acc = (i >= lb && i <= ub) || acc
          
 fromList :: [Int] -> IntervalSet
-fromList = undefined
+fromList [] = empty
+fromList (x:xs) = union (singleton x) (fromList xs)
 
 
 toList :: IntervalSet -> [Int]
