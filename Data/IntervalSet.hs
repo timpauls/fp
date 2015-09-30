@@ -53,8 +53,14 @@ singleInterval x y
     | otherwise = []
 
 insertInterval :: Interval -> IntervalSet -> IntervalSet
-insertInterval = undefined
-
+insertInterval i []  
+	| emptyInterval i = []
+	| otherwise = [i]
+insertInterval i (x:xs) 
+	| emptyInterval i = (x:xs)
+	| overlap i x =  insertInterval (merge i x) xs
+	| not (less i x) = x : (insertInterval i xs)
+	| otherwise = (i : (x : xs))
 
 fromIntervalList :: [(Int, Int)] -> IntervalSet
 fromIntervalList = undefined
