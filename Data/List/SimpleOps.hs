@@ -135,13 +135,19 @@ partition'' p l =
 -- 1. impl: direct
 
 inits        :: [a] -> [[a]]
-inits = undefined
+inits ls = [take i ls | i <- [0..(length ls)]]
 
 -- 2. impl: with foldr
 -- after chapter about folds
 
 inits'        :: [a] -> [[a]]
-inits' = undefined
+inits' = 
+	-- (a ->   [[a]] -> [[a]]) -> [[a]] -> [a] -> [[a]]
+	-- (a   ->   b   ->   b)   ->   b   -> [a] ->   b
+	foldr func [[]]
+	where
+		func a l =  []:(map (mapfunc a) l)
+		mapfunc a e = a:e
 
 -- ----------------------------------------
 
