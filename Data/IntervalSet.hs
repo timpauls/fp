@@ -50,11 +50,11 @@ inv (x0: (x1:xs)) = not(emptyInterval x0) && not(emptyInterval x1) && x0 `less` 
 singleInterval :: Int -> Int -> IntervalSet
 singleInterval x y
     | x <= y    = [(x, y)]
-    | otherwise = []
+    | otherwise = empty
 
 insertInterval :: Interval -> IntervalSet -> IntervalSet
 insertInterval i []  
-	| emptyInterval i = []
+	| emptyInterval i = empty
 	| otherwise = [i]
 insertInterval i (x:xs) 
 	| emptyInterval i = (x:xs)
@@ -63,7 +63,10 @@ insertInterval i (x:xs)
 	| otherwise = (i : (x : xs))
 
 fromIntervalList :: [(Int, Int)] -> IntervalSet
-fromIntervalList = undefined
+fromIntervalList =
+	foldr func empty
+	where
+		func i l = insertInterval i l
 
 
 -- ----------------------------------------
