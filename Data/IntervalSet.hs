@@ -64,9 +64,7 @@ insertInterval i (x:xs)
 
 fromIntervalList :: [(Int, Int)] -> IntervalSet
 fromIntervalList =
-	foldr func empty
-	where
-		func i l = insertInterval i l
+	foldr insertInterval empty
 
 
 -- ----------------------------------------
