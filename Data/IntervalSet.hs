@@ -11,22 +11,22 @@ type Interval = (Int, Int)
 
 overlap :: Interval -> Interval -> Bool
 overlap (x1, y1) (x2, y2)
-  = undefined
+  = (x1 <= (y2+1)) && (x2 <= (y1+1))
 
 
 less :: Interval -> Interval -> Bool
 less (_x1, y1) (x2, _y2)
-  = undefined
+  = y1 < x2
 
                            
 emptyInterval :: Interval -> Bool
 emptyInterval (x, y)
-  = undefined
+  = x > y
 
 
 -- merge 2 (overlapping) intervals
 merge :: Interval -> Interval -> Interval
-merge = undefined
+merge (x1, y1) (x2, y2) = (x1 `min` x2, y1 `max` y2)
 
 
 -- ----------------------------------------
@@ -38,7 +38,10 @@ merge = undefined
 type IntervalSet = [Interval]
 
 inv :: IntervalSet -> Bool
-inv = undefined
+inv [] = True
+inv (x: []) = not (emptyInterval x)
+inv (x0: (x1:xs)) = not(emptyInterval x0) && not(emptyInterval x1) && x0 `less` x1 && not (x0 `overlap` x1) && inv (x1:xs)
+
 
 
 -- ----------------------------------------
