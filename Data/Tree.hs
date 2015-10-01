@@ -83,22 +83,24 @@ maxDepth = visitTree undefined undefined undefined
 -- access functions
 
 -- zersägt den baum so, dass er (am weitesten linke element, der Baum ohne das linkeste Element)
+-- erwartet nur valide baeume.
 viewL :: Tree a -> Maybe (a, Tree a)
 viewL Null = Nothing
 viewL (Tip a) = Just (a, Null)
-viewL (Bin Null b) = viewL b
-viewL (Bin a Null) = viewL a
-viewL (Bin a b) = Just (l, rt)
+viewL (Bin a b) = 
+  Just (l, bin b rt)
   where
-    result = case viewL a of
-      Just (x, y) -> (x, y)
-    l = fst result
-    rt = bin (snd result) b 
+    (Just (l, rt)) = viewL a
 
 
 -- zersägt den baum so, dass er (am weitesten rechte element, der Baum ohne das rechteste Element)
 viewR :: Tree a -> Maybe (Tree a, a)
-viewR = undefined
+viewR Null = Nothing
+viewR (Tip a) = Just (Null, a)
+viewR (Bin a b) = 
+  Just (bin a rt, r)
+  where
+    (Just (rt, r)) = viewR b
 
 head :: Tree a -> a
 head = maybe (error "head: empty tree") fst . viewL
