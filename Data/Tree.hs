@@ -29,7 +29,15 @@ data Tree a
 -- | smart constructor
 -- garantiert einen baum ohne Null
 bin :: Tree a -> Tree a -> Tree a
-bin  = undefined
+-- bin Null Null = Null
+bin Null (Tip t1) = Tip t1
+bin (Tip t1) Null = Tip t1
+bin Null (Bin a b) = bin a b
+bin (Bin a b) Null = bin a b
+bin (Tip x) (Tip y) = Bin (Tip x) (Tip y)
+bin (Bin a b) (Tip c) = Bin (bin a b) (Tip c)
+bin (Tip a) (Bin b c) = Bin (Tip a) (bin b c)
+bin (Bin a b) (Bin c d) = Bin (bin a b) (bin c d)
 
 instance Functor Tree where
   fmap = undefined
