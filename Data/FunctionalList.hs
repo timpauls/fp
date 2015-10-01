@@ -9,16 +9,16 @@ type List a = [a] -> [a]
 -- ----------------------------------------
 
 fromList        :: [a] -> List a
-fromList l      = undefined
+fromList l      = \xs -> l ++ xs
 
 toList          :: List a -> [a]
-toList l        = undefined
+toList l        = l []
 
 empty           :: List a
-empty           = undefined
+empty           = P.const []
 
 singleton       :: a -> List a
-singleton e     = undefined
+singleton e     = P.const [e]
 
 -- (:) for functional lists
 cons            :: a -> List a -> List a
