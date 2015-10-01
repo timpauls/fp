@@ -25,10 +25,10 @@ cons            :: a -> List a -> List a
 --					a -> ([a] -> [a]) -> ([a] -> [a])
 cons e l        = \xs -> [e] ++ l xs
 
-
 -- dual to cons
 snoc            :: List a -> a -> List a
-snoc l e        = undefined
+--				([a] -> [a]) -> a -> ([a] -> [a])
+snoc l e        = \xs -> (l xs) ++ [e]
 
 -- (++) for functional lists
 append          :: List a -> List a -> List a
