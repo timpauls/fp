@@ -27,6 +27,7 @@ data Tree a
       deriving (Show, Data, Typeable)
 
 -- | smart constructor
+-- garantiert einen baum ohne Null
 bin :: Tree a -> Tree a -> Tree a
 bin  = undefined
 
@@ -77,9 +78,11 @@ maxDepth = visitTree undefined undefined undefined
 -- ----------------------------------------
 -- access functions
 
+-- zersägt den baum so, dass er (am weitesten linke element, der Baum ohne das linkeste Element)
 viewL :: Tree a -> Maybe (a, Tree a)
 viewL = undefined
 
+-- zersägt den baum so, dass er (am weitesten rechte element, der Baum ohne das rechteste Element)
 viewR :: Tree a -> Maybe (Tree a, a)
 viewR = undefined
 
