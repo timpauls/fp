@@ -40,7 +40,9 @@ bin (Tip a) (Bin b c) = Bin (Tip a) (bin b c)
 bin (Bin a b) (Bin c d) = Bin (bin a b) (bin c d)
 
 instance Functor Tree where
-  fmap = undefined
+  fmap f Null = Null
+  fmap f (Tip a) = Tip(f a)
+  fmap f (Bin a b) = Bin (fmap f a) (fmap f b)
 
 instance Applicative Tree where
   pure  = undefined
