@@ -29,15 +29,9 @@ data Tree a
 -- | smart constructor
 -- garantiert einen baum ohne Null
 bin :: Tree a -> Tree a -> Tree a
--- bin Null Null = Null
-bin Null (Tip t1) = Tip t1
-bin (Tip t1) Null = Tip t1
-bin Null (Bin a b) = bin a b
-bin (Bin a b) Null = bin a b
-bin (Tip x) (Tip y) = Bin (Tip x) (Tip y)
-bin (Bin a b) (Tip c) = Bin (bin a b) (Tip c)
-bin (Tip a) (Bin b c) = Bin (Tip a) (bin b c)
-bin (Bin a b) (Bin c d) = Bin (bin a b) (bin c d)
+bin Null r = r
+bin l Null = l
+bin l r = Bin l r
 
 instance Functor Tree where
   fmap f Null = Null
@@ -90,7 +84,17 @@ maxDepth = visitTree undefined undefined undefined
 
 -- zersägt den baum so, dass er (am weitesten linke element, der Baum ohne das linkeste Element)
 viewL :: Tree a -> Maybe (a, Tree a)
-viewL = undefined
+viewL Null = Nothing
+viewL (Tip a) = Just (a, Null)
+viewL (Bin Null b) = viewL b
+viewL (Bin a Null) = viewL a
+viewL (Bin a b) = Just (l, rt)
+  where
+    result = case viewL a of
+      Just (x, y) -> (x, y)
+    l = fst result
+    rt = bin (snd result) b 
+
 
 -- zersägt den baum so, dass er (am weitesten rechte element, der Baum ohne das rechteste Element)
 viewR :: Tree a -> Maybe (Tree a, a)
