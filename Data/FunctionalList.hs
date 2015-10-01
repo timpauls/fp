@@ -22,7 +22,9 @@ singleton e     = P.const [e]
 
 -- (:) for functional lists
 cons            :: a -> List a -> List a
-cons e l        = undefined
+--					a -> ([a] -> [a]) -> ([a] -> [a])
+cons e l        = \xs -> [e] ++ l xs
+
 
 -- dual to cons
 snoc            :: List a -> a -> List a
