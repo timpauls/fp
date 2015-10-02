@@ -68,16 +68,18 @@ instance Foldable Tree where
 visitTree :: b -> (a -> b) -> (b -> b -> b) -> Tree a -> b
 visitTree e tf bf = visit'
   where
-    visit' = undefined
+    visit' Null = e
+    visit' (Tip x) = tf x
+    visit' (Bin l r) = bf (visit' l) (visit' r)
 
 -- special visitors
 
 sizeTree :: Tree a -> Int
-sizeTree = visitTree undefined undefined undefined
+sizeTree = visitTree 0 (const 1) (+)
 
 minDepth, maxDepth :: Tree a -> Int
-minDepth = visitTree undefined undefined undefined
-maxDepth = visitTree undefined undefined undefined
+minDepth = visitTree 0 (const 1) (\x y -> (x `min` y) +1)
+maxDepth = visitTree 0 (const 1) (\x y -> (x `max` y) +1)
 
 -- ----------------------------------------
 -- access functions

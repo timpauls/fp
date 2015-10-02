@@ -20,6 +20,10 @@ prop_fromList''' :: [Int] -> Bool
 prop_fromList''' xs
   = toList (fromList'' xs) == xs
 
+prop_sizeTree :: [Int] -> Bool
+prop_sizeTree xs =
+  sizeTree (fromList'' xs) == length xs
+
 
 -- strong balancing criterium
 -- length of paths may be differ at most by 1
