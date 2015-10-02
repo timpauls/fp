@@ -37,7 +37,7 @@ prop_maxDepth xs =
 -- length of paths may be differ at most by 1
 prop_balance :: Tree Int -> Bool
 prop_balance t
-  = undefined
+  = maxDepth t - minDepth t <= 1
 
 -- weaker balancing criterium
 -- no path is longer than "ceiling (ld n)"
@@ -45,7 +45,7 @@ prop_balance t
 
 prop_balance' :: Tree Int -> Bool
 prop_balance' t
-  = undefined
+  = maxDepth t <= ceiling (logBase 2 (fromIntegral (sizeTree t)))
 
 -- ----------------------------------------
 
