@@ -45,7 +45,7 @@ prop_balance t
 
 prop_balance' :: Tree Int -> Bool
 prop_balance' t
-  = maxDepth t <= ceiling (logBase 2 (fromIntegral (sizeTree t)))
+  = maxDepth t - 1 <= ceiling (logBase 2 (fromIntegral (sizeTree t)))
 
 -- ----------------------------------------
 

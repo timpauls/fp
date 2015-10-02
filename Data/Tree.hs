@@ -133,11 +133,19 @@ toListSlow = visitTree undefined undefined undefined
 
 -- weak balancing criterion
 fromList :: [a] -> Tree a
-fromList = undefined
+fromList = fromList' -- cheat
 
 -- strong balancing criterion
 fromList' :: [a] -> Tree a
-fromList' = undefined
+fromList' [] = Null
+fromList' (x:[]) = Tip x
+fromList' l = 
+  bin (fromList' (lh l)) (fromList' (rh l))
+  where
+    lh l = take (mid l) l
+    rh l = drop (mid l) l
+    mid l = (length l) `div` 2
+
 
 -- list to the right
 fromList'' :: [a] -> Tree a
