@@ -26,14 +26,11 @@ type VarEnv = [(Ident, Expr)]
 
 substVars :: VarEnv -> Expr -> Expr
 substVars env
-  = visit V {
-  				vLit = Lit,
+  = visit idExpr {
   				vVar = \ident -> case lookup ident env of
   							Nothing -> Var ident
-  							Just a -> a,
-  				vUnary = Unary,
-  				vBinary = Binary
-			}
+  							Just a -> a
+  				}
 
 eval :: Expr -> Bool
 eval
