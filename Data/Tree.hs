@@ -55,8 +55,8 @@ instance MonadPlus Tree where
   mplus = undefined
 
 instance Monoid (Tree a) where
-  mempty  = undefined
-  mappend = undefined
+  mempty  = Null
+  mappend = bin -- accoring to the content, not the structure.
 
 -- fold elements like in a list from right to left
 instance Foldable Tree where
