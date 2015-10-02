@@ -34,7 +34,11 @@ substVars env
 
 eval :: Expr -> Bool
 eval
-  = visit $
-    undefined
+  = visit V {
+  				vLit = id,
+  				vVar = \x -> error $ unwords ["free variable", show x, "in expression"],
+  				vUnary = \op x -> mf1 op x,
+  				vBinary = \op x1 x2 -> mf2 op x1 x2
+			}
 
 -- ----------------------------------------
