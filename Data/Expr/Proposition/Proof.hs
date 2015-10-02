@@ -12,7 +12,11 @@ import           Data.Maybe                       (listToMaybe)
 -- ----------------------------------------
 
 truthTable :: Int -> [[Bool]]
-truthTable n = undefined
+truthTable n
+  | n == 0 = [[]]
+  | otherwise = map (True :) t' ++ map (False :) t'
+  where
+    t' = truthTable (n-1)
 
 -- compute a proof by generating a truth table,
 -- iterate over all rows in the table
@@ -22,9 +26,18 @@ truthTable n = undefined
 -- we have a counter example, else the expr
 -- is a tautology
 
+
+-- 1: anzahl der variablen = freeVars von e
+-- wahrheitstabelle damit
+-- darüber mappen und environments bauen
+-- mit jedem environment aufrufen.
+-- für false nothing zurueckgeben.
+
 proof' :: Expr -> Maybe VarEnv
 proof' e
-  = undefined
+  = map (map (substVars) (map (zip freeVarList) (truthTable (length (freeVarList)))))
+  where 
+    freeVarList = freeVars e
 
 
 proof :: Expr -> String
