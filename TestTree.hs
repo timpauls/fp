@@ -24,6 +24,14 @@ prop_sizeTree :: [Int] -> Bool
 prop_sizeTree xs =
   sizeTree (fromList'' xs) == length xs
 
+prop_minDepth :: [Int] -> Bool
+prop_minDepth xs =
+  minDepth (fromList'' xs) == min 2 (length xs)
+
+prop_maxDepth :: [Int] -> Bool
+prop_maxDepth xs =
+  maxDepth (fromList'' xs) == length xs
+
 
 -- strong balancing criterium
 -- length of paths may be differ at most by 1
