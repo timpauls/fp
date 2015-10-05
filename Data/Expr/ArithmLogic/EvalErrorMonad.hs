@@ -49,8 +49,8 @@ instance Applicative Result where
   
 instance Monad Result where
   return = R
-  (R v) (>>=) f = f v
-  e (>>=) f = e
+  (R v) >>= f = f v
+  (E m) >>= f = (E m)
 
 instance MonadError EvalError Result where
   throwError = E
