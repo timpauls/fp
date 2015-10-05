@@ -96,20 +96,28 @@ div0  = throwError Div0
 -- ----------------------------------------
 
 eval :: Expr -> Result Value
-eval (BLit b)          = undefined
-eval (ILit i)          = undefined
-eval (Var    x)        = undefined
-eval (Unary  op e1)    = undefined
-eval (Binary op e1 e2) = undefined
-eval (Cond   c e1 e2)  = undefined
-eval (Let _x _e1 _e2)  = notImpl "Let not implemented yet."
+eval (BLit b)          = return (B b)
+eval (ILit i)          = return (I i)
+eval (Var    x)        = freeVar x
+eval (Unary  op e1)    = do v1  <- eval e1
+                            mf1 op v1
+
+eval (Binary op e1 e2) = do v1  <- eval e1
+                            v2  <- eval e2
+                            mf2 op v1 v2
+                            
+eval (Cond   c e1 e2)  = do b <- evalBool c
+                            if b
+                              then eval e1
+                              else eval e2
+eval (Let _x _e1 _e2)  = notImpl "let"
 
 evalBool :: Expr -> Result Bool
 evalBool e
   = do r <- eval e
        case r of
         (B b) -> return b
-        _     -> undefined
+        (I i) -> boolExpected (I i)
   
 -- ----------------------------------------
 -- MF: Meaning function
@@ -161,19 +169,24 @@ mf2 op        = \ _ _ -> notImpl (pretty op)
 
 op2BBB :: (Bool -> Bool -> Bool) -> MF2
 op2BBB op (B b1) (B b2) = return (B (b1 `op` b2))
-op2BBB _  v1     v2     = undefined
+op2BBB _  _      (I i2) = boolExpected (I i2)
+op2BBB _  (I i1) _      = boolExpected (I i1)
 
 op2III :: (Integer -> Integer -> Integer) -> MF2
 op2III op (I i1) (I i2) = return (I (i1 `op` i2))
-op2III _  v1      v2    = undefined
+op2III _  (B b1) _      = intExpected (B b1)
+op2III _  _      (B b2) = intExpected (B b2)
 
 op2IIB :: (Integer -> Integer -> Bool) -> MF2
 op2IIB op (I i1) (I i2) = return (B (i1 `op` i2))
-op2IIB _  v1      v2    = undefined
+op2IIB _  (B b1) _      = intExpected (B b1)
+op2IIB _  _      (B b2) = intExpected (B b2)
 
 
 divIII :: (Integer -> Integer -> Integer) -> MF2
-divIII op (I x) (I y)   = undefined
-divIII _  v1      v2    = undefined
+divIII op (I _) (I 0)   = div0
+divIII op (I x) (I y)   = return (I (x `op` y))
+divIII _  (B b1) _      = intExpected (B b1)
+divIII _  _     (B b2)  = intExpected (B b2)
 
 -- ----------------------------------------
