@@ -6,7 +6,7 @@ import qualified Data.Expr.ArithmLogic.Eval                  as S
 import qualified Data.Expr.ArithmLogic.EvalMonad             as M
 import qualified Data.Expr.ArithmLogic.EvalErrorMonad        as E
 
--- {-
+ {-
 import qualified Data.Expr.ArithmLogic.EvalReaderErrorMonad  as R
 import qualified Data.Expr.ArithmLogic.EvalReaderErrorTrans  as RT
 import qualified Data.Expr.ArithmLogic.EvalListErrorMonad    as L
@@ -60,7 +60,7 @@ eval3 = E.eval
 pp3 :: Expr -> IO ()
 pp3 = putStrLn . pretty . eval3
 
--- {-
+ {-
 eval4 :: Expr -> L.Result L.Value
 eval4 = L.eval
 
