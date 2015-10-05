@@ -35,9 +35,14 @@ truthTable n
 
 proof' :: Expr -> Maybe VarEnv
 proof' e
-  = map (map (substVars) (map (zip freeVarList) (truthTable (length (freeVarList)))))
-  where 
+  = func environments e
+  where
+    environments = map (zipWith (\x y -> (x, Lit y)) freeVarList) (truthTable (length (freeVarList)))
     freeVarList = freeVars e
+    func [] e = if eval e then Nothing else Just []
+    func (env:[]) e = if eval (substVars env e) then Nothing else Just env
+    func (env:envs) e = if eval (substVars env e) then func envs e else Just env
+
 
 
 proof :: Expr -> String
