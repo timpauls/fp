@@ -38,11 +38,17 @@ type Counters
 
 processText :: T.Text -> Counters
 processText t
-  = undefined . T.lines $ t
+  = mconcat . map toCounters . T.lines $ t
 
 -- process a single line
 toCounters :: T.Text -> Counters
-toCounters = undefined
+toCounters t = 
+  (Sum lineCount, (Sum wordCount, (Sum charCount, ())))
+  where
+    lineCount = 1
+    wordCount = length (T.words t)
+    charCount = T.length t
+
 
 -- --------------------
 --
