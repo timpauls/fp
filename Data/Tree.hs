@@ -125,7 +125,7 @@ toList = foldr undefined undefined
 
 -- | runs in O(n^2) due to the use of (++)
 toListSlow :: Tree a -> [a]
-toListSlow = visitTree undefined undefined undefined
+toListSlow = visitTree [] (\x -> [x]) (\x y -> x ++ y)
 
 -- | build a balanced tree
 --
