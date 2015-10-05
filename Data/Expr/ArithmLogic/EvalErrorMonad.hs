@@ -41,7 +41,8 @@ data Result a
     deriving (Show)
 
 instance Functor Result where
-  fmap = undefined
+  fmap f (R v) = R (f v)
+  fmap f (E m) = (E m)
 
 instance Applicative Result where
   pure = return
@@ -54,7 +55,8 @@ instance Monad Result where
 
 instance MonadError EvalError Result where
   throwError = E
-  catchError = undefined
+  (R v) `catchError` _ = (R v)
+  (E m) `catchError` h = h m
   
 instance (Pretty a) => Pretty (Result a) where
   pretty (R x) = pretty x
