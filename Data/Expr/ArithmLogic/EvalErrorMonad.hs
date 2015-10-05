@@ -130,19 +130,19 @@ mf1 ToInt      = op1BI (toInteger . fromEnum)
 mf1 UPlus      = op1II id
 mf1 UMinus     = op1II (0 -)
 mf1 Signum     = op1II signum
-mf1 op         = undefined
+mf1 op         = \ _ -> notImpl (pretty op)
   
 op1BB :: (Bool -> Bool) -> MF1
 op1BB op (B b) = return $ B (op b)
-op1BB _  v     = undefined
+op1BB _  v     = boolExpected v
 
 op1II :: (Integer -> Integer) -> MF1
 op1II op (I i) = return (I (op i))
-op1II _  v     = undefined
+op1II _  v     = intExpected v
 
 op1BI :: (Bool -> Integer) -> MF1
 op1BI op (B b) = return (I (op b))
-op1BI _  v     = undefined
+op1BI _  v     = boolExpected v
 
 -- ----------------------------------------
 
