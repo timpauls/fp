@@ -62,7 +62,11 @@ instance Monoid (Tree a) where
 
 -- fold elements like in a list from right to left
 instance Foldable Tree where
-  foldr _ e t = undefined
+  -- (a -> b -> b) -> b -> t a -> b 
+  foldr _ e Null = e
+  foldr ft e (Tip a) = ft a e
+  foldr ft e (Bin a b) = foldr ft (foldr ft e b) a
+
 
 -- ----------------------------------------
 -- classical visitor
@@ -123,7 +127,7 @@ init = maybe (error "init: empty tree") fst . viewR
 
 -- | runs in O(n) due to the use of (:)
 toList :: Tree a -> [a]
-toList = foldr undefined undefined
+toList = foldr (:) []
 
 -- | runs in O(n^2) due to the use of (++)
 toListSlow :: Tree a -> [a]
