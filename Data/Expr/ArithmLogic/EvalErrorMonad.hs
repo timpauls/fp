@@ -48,11 +48,12 @@ instance Applicative Result where
   (<*>) = ap
   
 instance Monad Result where
-  return = undefined
-  (>>=) = undefined
+  return = R
+  (R v) (>>=) f = f v
+  e (>>=) f = e
 
 instance MonadError EvalError Result where
-  throwError = undefined
+  throwError = E
   catchError = undefined
   
 instance (Pretty a) => Pretty (Result a) where
@@ -101,7 +102,7 @@ eval (Var    x)        = undefined
 eval (Unary  op e1)    = undefined
 eval (Binary op e1 e2) = undefined
 eval (Cond   c e1 e2)  = undefined
-eval (Let _x _e1 _e2)  = undefined
+eval (Let _x _e1 _e2)  = notImpl "Let not implemented yet."
 
 evalBool :: Expr -> Result Bool
 evalBool e
