@@ -79,15 +79,18 @@ type Env = Map Ident Value
 newtype Result a = RR { unRR :: Env -> ResVal a }
 
 instance Functor Result where
-  fmap = undefined
+  fmap f r = r >>= return . f
   
 instance Applicative Result where
   pure = return
   (<*>) = ap
 
+
+  -- TODO: was passiert, wenn hier noch ein resErr drin ist?
 instance Monad Result where
-  return = undefined
-  (>>=)  = undefined
+  return a = RR  (\x -> (R a))
+  -- Result a -> (a -> Result b) -> Result b
+  m >>= f = RR (\x ->  unRR (f (resVal (unRR m x))) x)
   
 instance MonadError EvalError Result where
   throwError e
