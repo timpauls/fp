@@ -155,7 +155,8 @@ eval (Cond   c e1 e2)  = do b <- evalBool c
                               then eval e1
                               else eval e2
 
-eval (Let x e1 e2)     = undefined
+eval (Let x e1 e2)     = do r <- eval e1
+                            local (M.insert x r) (eval e2)
 
 evalBool :: Expr -> Result Bool
 evalBool e
