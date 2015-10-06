@@ -60,12 +60,12 @@ eval3 = E.eval
 pp3 :: Expr -> IO ()
 pp3 = putStrLn . pretty . eval3
 
- {-
-eval4 :: Expr -> L.Result L.Value
-eval4 = L.eval
+-- {-
+--eval4 :: Expr -> L.Result L.Value
+--eval4 = L.eval
 
-pp4 :: Expr -> IO ()
-pp4 = putStrLn . pretty . eval4
+--pp4 :: Expr -> IO ()
+--pp4 = putStrLn . pretty . eval4
 
 eval5 :: Expr -> R.ResVal R.Value
 eval5 = R.eval'
