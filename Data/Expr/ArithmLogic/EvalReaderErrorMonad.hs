@@ -142,7 +142,12 @@ eval' e = (unRR . eval) e M.empty -- start with an empty environment
 eval :: Expr -> Result Value
 eval (BLit b)          = return (B b)
 eval (ILit i)          = return (I i)
-eval (Var    x)        = undefined
+eval (Var    x)        = do env <- ask
+                            let maybeValue = M.lookup x env in
+                              case maybeValue of
+                                Nothing -> freeVar x
+                                Just a -> return a
+
 eval (Unary  op e1)    = do v1  <- eval e1
                             mf1 op v1
 
