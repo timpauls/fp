@@ -100,8 +100,7 @@ instance MonadError EvalError Result where
 
 instance MonadReader Env Result where
   ask             = RR (\x -> return x)
-  --local f (RR ef) = RR (\x -> )
-  local = undefined
+  local f (RR ef) = RR (\x -> ef (f x))
 
 
 -- ----------------------------------------
