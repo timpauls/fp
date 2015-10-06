@@ -85,24 +85,24 @@ instance Applicative Result where
   pure = return
   (<*>) = ap
 
-
-  -- TODO: was passiert, wenn hier noch ein resErr drin ist?
 instance Monad Result where
-  return a = RR  (\x -> (R a))
+  return a = RR  (\x -> return a)
   -- Result a -> (a -> Result b) -> Result b
-  m >>= f = RR (\x ->  unRR (f (resVal (unRR m x))) x)
+  m >>= f = RR (\x ->  do
+                          a <- unRR m x
+                          unRR (f a) x)
   
 instance MonadError EvalError Result where
   throwError e
-    = RR (\x -> E e)
+    = RR (\x -> throwError e)
   catchError (RR ef) handler
-    = RR (\x -> case ef x of
-              R r -> R r
-              E e -> unRR (handler e) x)
+    = RR (\x -> catchError (ef x) (\e -> unRR (handler e) x))
 
 instance MonadReader Env Result where
-  ask             = undefined
-  local f (RR ef) = undefined
+  ask             = RR (\x -> return x)
+  --local f (RR ef) = RR (\x -> )
+  local = undefined
+
 
 -- ----------------------------------------
 -- error handling
