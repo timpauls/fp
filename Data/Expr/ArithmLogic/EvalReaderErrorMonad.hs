@@ -94,9 +94,11 @@ instance Monad Result where
   
 instance MonadError EvalError Result where
   throwError e
-    = undefined
+    = RR (\x -> E e)
   catchError (RR ef) handler
-    = undefined
+    = RR (\x -> case ef x of
+              R r -> R r
+              E e -> unRR (handler e) x)
 
 instance MonadReader Env Result where
   ask             = undefined
