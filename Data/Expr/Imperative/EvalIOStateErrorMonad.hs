@@ -8,7 +8,7 @@ import Prelude hiding (lookup)
 
 import Control.Applicative (Applicative(..))
 import Control.Monad
-import Control.Monad.IO.Class
+import qualified Control.Monad.IO.Class as F
 import Control.Monad.Except
 import Control.Monad.State
 
@@ -87,8 +87,8 @@ instance (Pretty a) => Pretty (ResVal a) where
 newtype Result a = RT { runResult :: Store -> IO (ResVal a, Store) }
 
 instance Functor Result where
-  fmap f (RT sf)
-    = undefined
+  fmap f r
+    = r >>= return . f
   
 instance Applicative Result where
   pure  = return
@@ -96,12 +96,14 @@ instance Applicative Result where
 
 instance Monad Result where
   return x
-    = RT $ \ st ->
-            undefined
+    = RT (\s -> return (return x, s))
 
+  -- m a -> (a -> m b) -> m b
   RT sf >>= f
-    = RT $ \ st ->
-            do undefined
+    = RT (\s -> do {(rv, s1) <- sf s;
+                    case rv of
+                        E e -> return (E e, s1)
+                        R v -> runResult (f v) s1})
 
 instance MonadError EvalError Result where
   throwError e
