@@ -199,7 +199,10 @@ eval (Unary  op e1)    = do v1  <- eval e1
                             mf1 op v1
 
 eval (Binary Assign lhs rhs)
-                       = do undefined  -- use evalLValue, writeVar
+                       = do ident <- evalLValue lhs
+                            value <- eval rhs
+                            writeVar ident value
+                            return value
 
 eval (Binary Seq e1 e2)
                        = do undefined
