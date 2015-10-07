@@ -108,7 +108,7 @@ instance Monad Result where
 instance MonadError EvalError Result where
   throwError e
     = RT $ \ st ->
-            undefined
+            return (throwError e, st)
   
   catchError (RT sf) handler
     = RT $ \ st ->
