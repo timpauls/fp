@@ -8,7 +8,7 @@ import Prelude hiding (lookup)
 
 import Control.Applicative (Applicative(..))
 import Control.Monad
-import qualified Control.Monad.IO.Class as F
+-- import Control.Monad.IO.Class
 import Control.Monad.Except
 import Control.Monad.State
 
@@ -129,8 +129,10 @@ instance MonadState Store Result where
     = RT $ \ _old -> return (return (), st)
 
 instance MonadIO Result where
+  -- liftIO :: IO a -> Result a
+  -- IO a hier eine beliebige IO Operation.
   liftIO io = RT $ \ st ->
-                    do undefined
+                    do {v <- io;return (return v, st)}
                               
 -- ----------------------------------------
 --
@@ -303,7 +305,7 @@ eval e@(While c body)   = do b <- evalBool c
                                else return (B b)
 
 eval (Read msg)         = readValue msg
-eval (Write msg e)      = do undefined
+eval (Write msg e)      = do {value <- eval e; writeValue msg value; return value}
                           
 evalBool :: Expr -> Result Bool
 evalBool e
