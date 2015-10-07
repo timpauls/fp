@@ -82,8 +82,8 @@ instance (Pretty a) => Pretty (ResVal a) where
 newtype Result a = RT { runResult :: Store -> (ResVal a, Store) }
 
 instance Functor Result where
-  fmap f (RT sf)
-    = undefined
+  fmap f r
+    = r >>= return . f
       
 instance Applicative Result where
   pure  = return
@@ -91,10 +91,14 @@ instance Applicative Result where
 
 instance Monad Result where
   return x
-    = undefined
+    = RT (\s -> (return x, s))
 
+  -- m a -> (a -> m b) -> m b
   RT sf >>= f
-    = undefined
+    = RT (\s -> let (rv, s1) = sf s in 
+                      case rv of
+                        E e -> (E e, s1)
+                        R v -> runResult (f v) s1)
 
 instance MonadError EvalError Result where
   throwError e
