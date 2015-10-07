@@ -189,11 +189,20 @@ eval (Var    i)        = readVar i
                          
 eval (Unary preOp e)
   | preOp `elem` [PreIncr, PreDecr]
-                       = do undefined
+                       = do ident <- evalLValue e
+                            value <- readVar ident
+                            value' <- mf1 preOp value
+                            writeVar ident value'
+                            return value'
+
 
 eval (Unary postOp e)
   | postOp `elem` [PostIncr, PostDecr]
-                       = do undefined  -- use evalLValue, readVar, writeVar
+                       = do ident <- evalLValue e
+                            value <- readVar ident
+                            value' <- mf1 postOp value
+                            writeVar ident value'
+                            return value
                         
 eval (Unary  op e1)    = do v1  <- eval e1
                             mf1 op v1
@@ -274,9 +283,9 @@ mf1 UPlus      = op1II id
 mf1 UMinus     = op1II (0 -)
 mf1 Signum     = op1II signum
 mf1 PreIncr    = flip (mf2 Plus ) (I 1)
-mf1 PreDecr    = undefined -- similar to PreIncr
-mf1 PostIncr   = undefined -- similar to PreIncr
-mf1 PostDecr   = undefined -- similar to PreIncr
+mf1 PreDecr    = flip (mf2 Minus) (I 1) -- similar to PreIncr
+mf1 PostIncr   = flip (mf2 Plus) (I 1) -- similar to PreIncr
+mf1 PostDecr   = flip (mf2 Minus) (I 1) -- similar to PreIncr
 -- mf1 op         = \ _ -> notImpl (show op)
   
 op1BB :: (Bool -> Bool) -> MF1
