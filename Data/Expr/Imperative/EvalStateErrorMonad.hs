@@ -107,11 +107,10 @@ instance MonadError EvalError Result where
   catchError (RT sf) handler
     = RT (\s -> let (rv, s1) = sf s in
                     case rv of  
-                      -- E e -> catchError e (\x -> runResult (handler x) s1) -- errorhandling kommt später.
+                      E e -> runResult (handler e) s1
                       R v -> ((R v), s1))
 
 instance MonadState Store Result where
-  -- get :: Result
   get
     = RT (\s -> (return s, s))
 
