@@ -185,7 +185,7 @@ eval :: Expr -> Result Value
 eval (BLit b)          = return (B b)
 eval (ILit i)          = return (I i)
 
-eval (Var    i)        = undefined
+eval (Var    i)        = readVar i
                          
 eval (Unary preOp e)
   | preOp `elem` [PreIncr, PreDecr]
