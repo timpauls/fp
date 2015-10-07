@@ -229,7 +229,11 @@ eval (Cond   c e1 e2)  = do b <- evalBool c
                               then eval e1
                               else eval e2
 
-eval e@(While c body)   = do undefined
+eval e@(While c body)  = do b <- evalBool c
+                            if b
+                              then do eval body
+                                      eval e
+                              else return (B b)
 
 eval (Read _)           = notImpl "read"  -- needs IO
 eval (Write _ _)        = notImpl "write" -- needs IO
