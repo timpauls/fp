@@ -123,10 +123,10 @@ instance MonadError EvalError Result where
 
 instance MonadState Store Result where
   get
-    = RT $ \ st -> undefined
+    = RT $ \ st -> return (return st, st)
 
   put st
-    = RT $ \ _old -> undefined
+    = RT $ \ _old -> return (return (), st)
 
 instance MonadIO Result where
   liftIO io = RT $ \ st ->
