@@ -102,17 +102,21 @@ instance Monad Result where
 
 instance MonadError EvalError Result where
   throwError e
-    = undefined
+    = RT (\s -> (throwError e, s))
   
   catchError (RT sf) handler
-    = undefined
+    = RT (\s -> let (rv, s1) = sf s in
+                    case rv of  
+                      -- E e -> catchError e (\x -> runResult (handler x) s1) -- errorhandling kommt später.
+                      R v -> ((R v), s1))
 
 instance MonadState Store Result where
+  -- get :: Result
   get
-    = undefined
+    = RT (\s -> (return s, s))
 
   put st
-    = undefined
+    = RT (\s -> (return (), st))
   
 -- ----------------------------------------
 --
